@@ -1,0 +1,66 @@
+NAME
+    addecho - add an echo sound effect to WAV audio files
+
+SYNOPSIS
+    addecho [-d delay] [-v volume_scale] sourcewav destwav
+
+DESCRIPTION
+	addecho can be used to add an echo sound effect to audio files while
+    leaving the original audio intact. The program creates a new wav file
+    with the echo effect added, taking in the following parameters:
+    
+    sourcewav
+        The existing mono input file containing original audio data. Must 
+        be in WAV format.
+    
+    destwav
+        The mono output file where the modified audio will be stored after
+        addecho is run. Must be in WAV format.
+
+    The following options are available:
+
+    -d delay
+        Specifies the delay parameter, used to determine how long the output 
+        audio starts after the original starts. It is measured in samples, 
+        where each sample is a discrete unit of audio data. A larger delay
+        value produces a more pronounced echo sound effect.
+    
+    -v volume_scale
+        Specifies the volume_scale parameter, which controls the intensity of
+        the echo sound relative to the original sound provided in sourcewav.
+        It is a scalar multiplier specifying the amount by which to scale down
+        the volume. A larger volume_scale value makes the echo less prominent.
+
+    If -d and -v are not provided, default values of 8000 samples of delay and
+    volume_scale of 4 are used.
+
+    Internally, the addecho program analyses the sourcewav input audio file in
+    pieces, called samples. It individually adjusts the volume and delay for 
+    each sample based on the specified settings and calculations, repeating the
+    process until the complete audio with the echo sound effect is created.
+
+RETURN VALUES
+    A status code of 0 is produced upon successful execution. Otherwise, in case
+    of errors, 1 is returned and the error is printed.
+
+EXAMPLES
+    addecho -d 1000 -v 2 input.wav output.wav
+        Applies an echo effect with a delay of 1000 samples and a volume scale of
+        2 to the input.wav file, generating output.wav with the modified audio.
+
+    addecho source.wav dest.wav
+        Since -d is not provided, the default value of 8000 is used; since -v is not 
+        provided, the default value of 4 is used, scaling down the volume by 4.
+        
+WARNINGS
+    addecho will fail to execute under the following conditions:
+        - either sourcewav or destwav is not provided.
+        - sourcewav is an unsupported audio type.
+        - sourcewav does not exist or is not in the specified location.
+        - sourcewav is not a valid WAV file.
+    
+    Specifying existing files as destwav may lead to unintended consequences or
+    data loss.
+
+BUGS
+    There are no known bugs in the addecho program at this time.
